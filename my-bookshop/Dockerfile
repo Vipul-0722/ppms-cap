@@ -1,25 +1,18 @@
-# Filename: Dockerfile
-
-# Use an official Node.js runtime as a parent image
-FROM node:18-alpine
-
-# Set the working directory in the container
+FROM node:20-slim
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package files first
 COPY package*.json ./
-
-# Install app dependencies
 RUN npm install
 
-# Bundle app source
+# Copy the entire application
 COPY . .
 
-# Build the CDS project
-RUN npx cds-build
+# Build the application if necessary
+RUN if [ -f "cds-build" ]; then npm run build; fi
 
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 4004
 
-# Define the command to run your app
+# Start the application
 CMD [ "npm", "start" ]

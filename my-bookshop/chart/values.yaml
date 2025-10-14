@@ -1,27 +1,20 @@
-# yaml-language-server: $schema=./values.schema.json
+replicaCount: 1
 
-global:
-  domain: test.lis.shoot.canary.k8s-hana.ondemand.com
-  imagePullSecret:
-    name: docker-registry
-  image:
-    registry: registry-server
-    tag: latest
-srv:
-  bindings:
-    {}
-  image:
-    repository: my-bookshop-srv
-  resources:
-    limits:
-      ephemeral-storage: 1G
-      memory: 500M
-    requests:
-      ephemeral-storage: 1G
-      cpu: 500m
-      memory: 500M
-  health:
-    liveness:
-      path: /health
-    readiness:
-      path: /health
+image:
+  repository: vipul710/my-bookshop
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 4004
+
+# Note: Database and XSUAA credentials should be managed via Kubernetes secrets
+# and referenced in the deployment. This example assumes they are set as environment variables.
+# For example, you would create a secret with your HANA credentials and mount it.
+# env:
+#   - name: "VCAP_SERVICES"
+#     valueFrom:
+#       secretKeyRef:
+#         name: hana-credentials
+#         key: VCAP_SERVICES
