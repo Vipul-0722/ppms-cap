@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: vipul710/my-bookshop
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 service:
